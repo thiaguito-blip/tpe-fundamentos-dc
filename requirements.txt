@@ -1,0 +1,7 @@
+!pip install wget
+!pip install --upgrade numpy
+!pip install -U scikit-learn numpy scipy
+!pip install statsmodels
+!pip install kmodes
+!pip install matplotlib
+!pip install seaborn
