@@ -12,10 +12,9 @@ El trabajo completo está en el notebook **`Trabajo final.ipynb`**.
 | Archivo | Descripción |
 |---|---|
 | `Trabajo final.ipynb` | Notebook con todo el análisis |
-| `datos.zip` | Contiene `results.csv` (respuestas de la encuesta, ~140 MB descomprimido) |
+| `results.zip` | Contiene `results.csv` (respuestas de la encuesta, ~140 MB descomprimido) |
 | `schema.csv` | Diccionario de las columnas de la encuesta |
 | `requirements.txt` | Dependencias de Python |
-| `results.zip` | Archivo vacío/corrupto (2 bytes). **Ignorarlo**, se usa `datos.zip` |
 
 ---
 
@@ -25,7 +24,37 @@ El trabajo completo está en el notebook **`Trabajo final.ipynb`**.
 - **pip** actualizado.
 - ~2 GB de RAM libres y ~300 MB de disco.
 - Conexión a internet **solo** para instalar las dependencias (y para descargar los datos
-  si no se usa `datos.zip`).
+  si no se usa `results.zip`).
+
+---
+
+**Windows (PowerShell):**
+
+```powershell
+git clone https://github.com/thiaguito-blip/tpe-fundamentos-dc.git
+cd tpe-fundamentos-dc
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install numpy pandas scipy scikit-learn statsmodels kmodes matplotlib seaborn wget jupyter ipykernel
+python -m zipfile -e results.zip .
+jupyter notebook
+```
+
+**Linux / macOS:**
+
+```bash
+git clone https://github.com/thiaguito-blip/tpe-fundamentos-dc.git
+cd tpe-fundamentos-dc
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install numpy pandas scipy scikit-learn statsmodels kmodes matplotlib seaborn wget jupyter ipykernel
+python -m zipfile -e results.zip .
+jupyter notebook
+```
+
+Después, abrí `Trabajo final.ipynb`. El detalle de cada paso está más abajo.
 
 ---
 
@@ -62,13 +91,21 @@ Cuando el entorno esté activo, el prompt mostrará `(.venv)` al comienzo.
 
 ### 3. Instalar las dependencias
 
+Comando directo:
+
 ```bash
 python -m pip install --upgrade pip
+pip install numpy pandas scipy scikit-learn statsmodels kmodes matplotlib seaborn wget jupyter ipykernel
+```
+
+O, equivalente, usando el archivo del repositorio:
+
+```bash
 pip install -r requirements.txt
 ```
 
-Esto instala, entre otras cosas, **Jupyter** (`jupyter`, `ipykernel`), `numpy`, `pandas`,
-`scipy`, `scikit-learn`, `statsmodels`, `kmodes`, `matplotlib`, `seaborn` y `wget`.
+Esto instala **Jupyter** (`jupyter`, `ipykernel`), `numpy`, `pandas`, `scipy`,
+`scikit-learn`, `statsmodels`, `kmodes`, `matplotlib`, `seaborn` y `wget`.
 
 Versiones con las que se probó el notebook:
 
@@ -87,18 +124,23 @@ Versiones con las que se probó el notebook:
 ### 4. Descomprimir los datos
 
 El notebook busca `results.csv` y `schema.csv` **en la misma carpeta que el notebook**
-(la raíz del repositorio). `schema.csv` ya está; falta extraer `results.csv`:
-
-**Windows (PowerShell):**
-
-```powershell
-Expand-Archive -Path datos.zip -DestinationPath . -Force
-```
-
-**Linux / macOS:**
+(la raíz del repositorio). `schema.csv` ya está; falta extraer `results.csv` de
+`results.zip`. Este comando funciona igual en Windows, Linux y macOS (usa solo Python):
 
 ```bash
-unzip -o datos.zip
+python -m zipfile -e results.zip .
+```
+
+Alternativas nativas:
+
+```powershell
+# Windows (PowerShell)
+Expand-Archive -Path results.zip -DestinationPath . -Force
+```
+
+```bash
+# Linux / macOS
+unzip -o results.zip
 ```
 
 Verificá que quedó `results.csv` junto al notebook (≈ 140 MB).
@@ -106,7 +148,7 @@ Verificá que quedó `results.csv` junto al notebook (≈ 140 MB).
 > **Alternativa:** si `results.csv` no existe, la primera celda intenta descargarlo
 > automáticamente desde el repositorio oficial de Stack Overflow. Eso requiere internet y
 > acceso a `media.githubusercontent.com`; si estás detrás de un proxy, VPN o red
-> corporativa puede fallar con `getaddrinfo failed`. En ese caso usá `datos.zip`.
+> corporativa puede fallar con `getaddrinfo failed`. En ese caso usá `results.zip`.
 
 ### 5. (Opcional) Registrar el kernel en Jupyter
 
@@ -166,11 +208,11 @@ También se puede bajar el costo reduciendo `n_init` en `KModes` o limitando el 
 - **Las primeras celdas contienen `!pip install ...`.** Funcionan dentro de Jupyter y
   se instalan en el entorno del kernel. Si ya hiciste el paso 3 no hace falta que las
   ejecutes, pero no rompen nada.
-- **`FileNotFoundError: results.csv`**: no extrajiste `datos.zip` en la carpeta del
+- **`FileNotFoundError: results.csv`**: no extrajiste `results.zip` en la carpeta del
   notebook, o abriste Jupyter desde otra carpeta. Ejecutá `jupyter notebook` desde la
   raíz del repositorio.
 - **`getaddrinfo failed` / `URLError`**: problema de red al intentar descargar los datos.
-  Extraé `datos.zip` (paso 4) y no hará falta descargar nada.
+  Extraé `results.zip` (paso 4) y no hará falta descargar nada.
 - **`DtypeWarning: Columns ... have mixed types`** al leer `results.csv`: es solo un
   aviso por columnas de tipos mixtos; no afecta la ejecución.
 - **El kernel se reinicia por falta de memoria**: cerrá otros programas o usá una
