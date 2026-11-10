@@ -1,7 +1,15 @@
-!pip install wget
-!pip install --upgrade numpy
-!pip install -U scikit-learn numpy scipy
-!pip install statsmodels
-!pip install kmodes
-!pip install matplotlib
-!pip install seaborn
+# Dependencias del TPE Fundamentos de Ciencia de Datos
+# Instalación: pip install -r requirements.txt
+# Equivalente directo:
+#   pip install numpy pandas scipy scikit-learn statsmodels kmodes matplotlib seaborn wget jupyter ipykernel
+numpy
+pandas
+scipy
+scikit-learn
+statsmodels
+kmodes
+matplotlib
+seaborn
+wget
+jupyter
+ipykernel
